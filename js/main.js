@@ -14,25 +14,74 @@
  */
 
 
-// ? FUNZIONI DEL MIO PROGRAMMA    
-function palindrome(str) {
-    var re = /[^A-Za-z0-9]/g;
-    str = str.toLowerCase().replace(re, '');
-    var len = str.length;
-    for (var i = 0; i < len/2; i++) {
-        if (str[i] !== str[len - 1 - i]) {
-            return false;
-        }
-    }
-    return true;
+/* Faccio inserire una parola all'utente */
+const userWord = prompt('inserisci una parola per verificare la sua palindromia').trim();
+/* Richiamo la funzione scritta per verificare la palidromia di una parola, se true stampa che è palidroma */
+if(isPalindrome(userWord)){
+    console.log('La parola inserita è palindroma');
+} else{
+    console.log('Mi dispiace, la parola non è palindroma, è una parola comune');
+}  
+
+/* Finché l'utente non sceglie pari o dispari chiedi la scelta */
+let oddOrEven = '';
+while( (oddOrEven != 'pari') && (oddOrEven != 'dispari') ){
+    oddOrEven = prompt('pari o dispari?').toLowerCase().trim();
+}
+console.log(`L'utente ha scelto: ${oddOrEven}`);
+
+/* A questo punto l'utente puo scegliere un numero da 1 a 5 */
+let userNumber = 0;
+// Finchè l'utente non inserisce un numero valido (da 1 a 5) chiedi di inserirlo
+while( (userNumber < 1) || (userNumber > 5) || isNaN(userNumber) ){
+    userNumber = parseInt(prompt('Inserisci un numero valido da 1 a 5'));
+}
+console.log(`L'utente ha scelto IL numero: ${userNumber}`);
+
+/* Scelgo un numero random da 1 a 5 per il pc */
+const randomNumber = getRandomInt(5)
+console.log(`Il numero random per il PC è ${randomNumber}`);
+console.log(`la somma dei due numeri è pari? --> ${sumEven (userNumber, randomNumber)}`);
+
+// Se l'utente ha scelto pari (true) e la somma dei due numeri è (true), l'utente ha vinto
+if ( (oddOrEven == 'pari') && (sumEven (userNumber, randomNumber)) ){
+    console.log('COMPLIMENTI, HAI VINTO!!!');
+} else{
+    console.warn('MI DISPIACE HA VINTO IL PC :(');
 }
 
-/* La seguente funzione genera un numero random da 1 a un numero definito */
+/* **********************************FUNCTIONS*********************************** */
+/**
+ * La seguente funzione prende una stringa in input e verifica la sua palindromia. Se vero restituisce true, altrimenti false *   
+ * @param {*} stringToCheck stringa da verificare
+ * @returns                 ritorna true se la stringa è palindroma, false altrimenti
+ */
+function isPalindrome(stringToCheck) {
+    let reversedString = "";
+    for (let i = stringToCheck.length - 1; i >= 0; i--){
+        //reversedString += stringToCheck[i];
+        reversedString += stringToCheck.charAt(i);
+    }
+    if(reversedString == stringToCheck){
+        return true;
+    }
+    return false;
+}
+
+/**
+ * La seguente funzione genera un numero random da 1 a un numero definito
+ * @param {*} max   Numero max random che può ritornare la funzione
+ * @returns         Ritorna un numero random tra 1 e un max definito
+ */
 function getRandomInt(max) {
     return Math.floor( (Math.random() * max) + 1);
 }
 
-/* La seguente funzione restituisce 'true' se il numero è pari, altrimenti 'false' */
+/**
+ * La seguente funzione restituisce 'true' se il numero è pari, altrimenti 'false'
+ * @param {*} number    Numero che si vuole verificare se pari o dispari 
+ * @returns             Restituisce 'true' or 'false'
+ */
 function isEven (number){
     if (number % 2 === 0){
         return true;
@@ -40,53 +89,13 @@ function isEven (number){
     return false;
 }
 
-/* La seguente funzione restituisce 'true' se la somma è pari, altrimenti 'false' */
+/**
+ * Dati due numeri, la seguente funzione restituisce 'true' se la loro somma è un numero pari, altrimenti 'false'
+ * @param {*} num1  Numero 1  
+ * @param {*} num2  Numero 2
+ * @returns         Restituisce 'true' se la somma dei due numeri è pari
+ */
 function sumEven (num1, num2){
     const sum = num1 + num2;
     return isEven (sum);
 }
-// ? /FUNZIONI DEL MIO PROGRAMMA 
-
-/* Faccio inserire una parola all'utente */
-const userWord = prompt('inserisci una parola per verificare la sua palindromia');
-
-/* Richiamo la funzione scritta per verificare la palidromia di una parola, se true stampa che è palidroma */
-if(palindrome(userWord)){
-    console.log('La parola inserita è palindroma');
-} else{
-    console.log('Mi dispiace, la parola non è palindroma, è una parola comune');
-} 
-
-/* L'utente sceglie pari o dispari, vengono fatti tutti i controlli per vedere se è scritto corretto */
-let oddOrEven = prompt('pari o dispari?').toLowerCase().trim();
-if(oddOrEven == 'pari'){
-    oddOrEven = true;
-    console.log('Scelta pari');
-} else if (oddOrEven == 'dispari'){
-    oddOrEven = false;
-    console.log('Scelta dispari');
-} else {
-    console.log(`Scelta non valida ${oddOrEven}`);
-}
-
-/* A questo punto l'utente puo scegliere un numero da 1 a 5 */
-let userNumber = parseInt(prompt('Inserisci un numero da 1 a 5'));
-
-// Se la scelta dell'utente è pari, ma il numero inserito è dispari
-if( (oddOrEven) && !(userNumber % 2 == 0) ){
-    userNumber = parseInt(prompt('Inserisci un numero PARI valido'));
-} else if( !(oddOrEven) && (userNumber % 2 == 0) ){
-    userNumber = parseInt(prompt('Inserisci un numero DISPARI valido'));
-}
-
-const randomNumber = getRandomInt(5)
-console.log(`Il numero random per il PC è ${randomNumber}`);
-console.log(`la somma dei due numeri è pari? --> ${sumEven (userNumber, randomNumber)}`);
-
-// Se l'utente ha scelto pari (true) e la somma dei due numeri è (true), l'utente ha vinto
-if ( oddOrEven === sumEven (userNumber, randomNumber) ){
-    console.log('COMPLIMENTI, HAI VINTO!!!');
-} else{
-    console.warn('MI DISPIACE HA VINTO IL PC :(');
-}
-
